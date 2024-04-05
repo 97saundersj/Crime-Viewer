@@ -26,7 +26,11 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln --configuration Release
-
+        
+      - name: dotnet test
+        run: dotnet test Backend/CrimeViewerTests/CrimeViewerTests.csproj --configuration Release --logger trx --results-directory ./TestResults
+        id: test-results
+        
       - name: dotnet publish
         run: dotnet publish Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
