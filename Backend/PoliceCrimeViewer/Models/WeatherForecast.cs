@@ -1,13 +1,14 @@
 namespace PoliceCrimeViewer
 {
-    public class WeatherForecast
+    public class CrimeSummary
     {
-        public DateOnly Date { get; set; }
+        public string Category { get; set; }
+        public int Count { get; set; }
 
-        public int TemperatureC { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
-        public string? Summary { get; set; }
+        public CrimeSummary(string category, int count)
+        {
+            Category = category;
+            Count = count;
+        }
     }
 }
