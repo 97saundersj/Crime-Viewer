@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoliceCrimeViewer", "Police
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrimeViewerTests", "..\CrimeViewerTests\CrimeViewerTests.csproj", "{C205D672-9C70-4840-AC97-EB51AA37D2DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crime-Viewer-FrontEnd", "..\Crime-Viewer-FrontEnd\Crime-Viewer-FrontEnd.csproj", "{2627A4D9-C94F-49B9-9E57-3FF0B2AFDD00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crime-Viewer-FrontEnd", "..\Crime-Viewer-FrontEnd\Crime-Viewer-FrontEnd.csproj", "{2627A4D9-C94F-49B9-9E57-3FF0B2AFDD00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
