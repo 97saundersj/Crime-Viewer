@@ -1,60 +1,71 @@
-﻿using CrimeSummaryService.Controllers;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using CrimeSummaryService.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
-using PoliceCrimeViewer;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+using PoliceUk;
+using PoliceUk.Entities.StreetLevel;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace CrimeSummaryService.Tests
+namespace CrimeService.Tests
 {
     [TestClass]
-    public class CrimeSummaryControllerTests
+    public class CrimeControllerTests
     {
         [TestMethod]
-        public async Task GetCrimeSummary_Returns_Successful_Response()
+        public void GetCrimeSummary_ReturnsStreetLevelCrimeResults()
         {
             // Arrange
-            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-            mockHttpMessageHandler
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("[{\"category\":\"Burglary\"},{\"category\":\"Assault\"}]")
-                });
+            var mockPoliceClient = new Mock<IPoliceUkClient>();
 
-            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            var controller = new CrimeSummaryController(httpClient);
+            // Setup the behavior of StreetLevelCrimes method
+            var expectedResults = new StreetLevelCrimeResults()
+            {
+                Crimes = new List<Crime>
+                {
+                    new Crime()
+                    {
+                        Category = "Category1"
+                    }
+                }
+            };
+            mockPoliceClient.Setup(c => c.StreetLevelCrimes(It.IsAny<Geoposition>(), It.IsAny<DateTime?>()))
+                            .Returns(expectedResults);
+            var controller = new CrimeController(mockPoliceClient.Object);
+
+            double lat = 51.44237;
+            double lng = -2.49810;
+            int? month = 1;
 
             // Act
-            var crimeSummary = await controller.GetCrimeSummary(51.44237, -2.49810, 1);
+            var result = controller.GetCrimeSummary(lat, lng, month);
 
             // Assert
-            Assert.IsNotNull(crimeSummary);
-            Assert.AreEqual(2, crimeSummary.Count);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedResults, result);
         }
 
+        // TODO: Test that month will get turned into DateTime
+
         [TestMethod]
-        public async Task GetCrimeSummary_Returns_Error_When_Api_Fails()
+        public void GetCrimeSummary_ExceptionsCaughtAndThrownNicely()
         {
             // Arrange
-            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-            mockHttpMessageHandler
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            var mockPoliceClient = new Mock<IPoliceUkClient>();
+            mockPoliceClient.Setup(c => c.StreetLevelCrimes(It.IsAny<Geoposition>(), It.IsAny<DateTime?>()))
+                            .Throws(new Exception("Test exception"));
 
-            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            var controller = new CrimeSummaryController(httpClient);
+            var controller = new CrimeController(mockPoliceClient.Object);
+
+            double lat = 51.44237;
+            double lng = -2.49810;
+            int? month = 1;
 
             // Act & Assert
-            var exception = await Assert.ThrowsExceptionAsync<Exception>(() => controller.GetCrimeSummary(51.44237, -2.49810, 1));
-            Assert.AreEqual(HttpStatusCode.InternalServerError.ToString(), exception.Message);
+            var exception = Assert.ThrowsException<Exception>(() => controller.GetCrimeSummary(lat, lng, month));
+            Assert.AreEqual("Failed to retrieve crime data from Police UK API.", exception.Message);
         }
     }
 }

@@ -1,62 +1,36 @@
-﻿using System.Net.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PoliceCrimeViewer;
+﻿using Microsoft.AspNetCore.Mvc;
+using PoliceUk.Entities.StreetLevel;
+using PoliceUk;
 
 namespace CrimeSummaryService.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CrimeSummaryController : ControllerBase
+    public class CrimeController : ControllerBase
     {
-        private readonly HttpClient _httpClient;
-        //private readonly HttpMessageHandler _httpMessageHandler;
+        private readonly IPoliceUkClient PoliceClient;
 
-        public CrimeSummaryController(HttpClient httpClient)
+        public CrimeController(IPoliceUkClient policeClient)
         {
-            //_httpMessageHandler = httpMessageHandler;
-            _httpClient = httpClient;
+            PoliceClient = policeClient;
         }
 
         [HttpGet]
-        public async Task<List<CrimeSummary>> GetCrimeSummary(double lat, double lng, int month)
+        public StreetLevelCrimeResults GetCrimeSummary(double lat, double lng, int? month = null)
         {
             try
             {
-                using (_httpClient)//(var httpClient = new HttpClient(_httpMessageHandler))
-                {
-                    DateTime currentDate = DateTime.Now;
-                    DateTime requestedDate = new DateTime(currentDate.Year - (month <= currentDate.Month ? 0 : 1), month, 1);
+                var geoposition = new Geoposition(lat, lng);
+                DateTime? requestedDate = month.HasValue ? DateTime.Now.AddMonths(-month.Value) : null;
 
-                    string crimeDataUrl = $"https://data.police.uk/api/crimes-street/all-crime?lat={lat}&lng={lng}&date={requestedDate:yyyy-MM}";
-                    var response = await _httpClient.GetAsync(crimeDataUrl);
+                var streetLevelCrimes = PoliceClient.StreetLevelCrimes(geoposition, requestedDate);
 
-                    if (!response.IsSuccessStatusCode)
-                        throw new Exception(response.StatusCode.ToString());
-
-                    var crimeData = JsonConvert.DeserializeObject<List<Crime>>(await response.Content.ReadAsStringAsync());
-
-                    // Group crimes by category
-                    var crimeSummary = crimeData.GroupBy(c => c.Category)
-                                                .Select(group => new CrimeSummary(group.Key, group.Count())).ToList();
-
-                    return crimeSummary;
-                }
+                return streetLevelCrimes;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Failed to retrieve crime data from Police UK API.", ex);
             }
         }
-    }
-
-    public class Crime
-    {
-        public string Category { get; set; }
-        // Add other properties as needed
     }
 }
