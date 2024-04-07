@@ -57,7 +57,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'crimeviewer'
+          app-name: 'Crime-Viewer-FrontEnd'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ABA5A3E4B51E4360A496872267EB862F }}
           package: .
