@@ -16,12 +16,16 @@
 }
 
 .top-row {
-    height: 3.5rem;
+    height: 5rem;
     background-color: rgba(0,0,0,0.4);
 }
 
 .navbar-brand {
     font-size: 1.1rem;
+}
+
+.nav-icon {
+    margin-right: 0.1rem;
 }
 
 .bi {

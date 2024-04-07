@@ -25,7 +25,7 @@ jobs:
           include-prerelease: true
 
       - name: Build LocalCrimeViewer API
-        run: dotnet build Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release
+        run: dotnet build Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj --configuration Release
 
       - name: Build LocalCrimeViewer API Tests
         run: dotnet build Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release
