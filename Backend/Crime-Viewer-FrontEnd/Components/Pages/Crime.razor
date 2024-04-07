@@ -1,42 +1,93 @@
 ﻿@page "/"
 @attribute [StreamRendering]
-
-@page "/fetchdata"
-@using System.Text.Json
-@using static System.Net.WebRequestMethods
-@inject IHttpClientFactory HttpClientFactory
-@inject IConfiguration configuration
-@using System.Net.Http.Json
-@using System.Collections.Generic
-@inject IConfiguration Configuration
-@inject HttpClient HttpClient
 @inject ApiService ApiService
 
 <PageTitle>Local Crime Viewer</PageTitle>
 
 <h1>Local Crime Viewer</h1>
 
-<p>Here there will be inputs to allow the User to search for Lat Lng and the month to retrieve local crimes for.</p>
+<p>Enter latitude:</p>
+<InputNumber @bind-Value="Latitude" />
+
+<p>Enter longitude:</p>
+<InputNumber @bind-Value="Longitude" />
+
+<p>Select month:</p>
+<InputSelect class="form-select" @bind-Value="SelectedMonth">
+    <option value="1">January</option>
+    <option value="2">February</option>
+    <option value="3">March</option>
+    <option value="4">April</option>
+    <option value="5">May</option>
+    <option value="6">June</option>
+    <option value="7">July</option>
+    <option value="8">August</option>
+    <option value="9">September</option>
+    <option value="10">October</option>
+    <option value="11">November</option>
+    <option value="12">December</option>
+</InputSelect>
+
+<button class="btn btn-primary" @onclick="Search">Search</button>
+
 <p>The results will be shown in a table here.</p>
 <br>
 <p>The status of the REST API will be shown below:</p>
 
 @if (Test == null)
 {
-	<p><em>Loading...</em></p>
+    <p><em>Loading...</em></p>
 }
 else
 {
-	<p><em>@Test</em></p>
+    <p><em>@Test</em></p>
+}
+@if (showTable)
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Crime Type</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>2024-04-01</td>
+            <td>Theft</td>
+            <td>123 Main St</td>
+        </tr>
+        <tr>
+            <td>2024-04-02</td>
+            <td>Assault</td>
+            <td>456 Elm St</td>
+        </tr>
+        <tr>
+            <td>2024-04-03</td>
+            <td>Vandalism</td>
+            <td>789 Oak St</td>
+        </tr>
+    </tbody>
+</table>
 }
 
 @code {
-	private string Test;
-	protected override async Task OnInitializedAsync()
-	{
-		Test = await ApiService.GetTest();
+    private double Latitude = 0.0;
 
-	}
+    private double Longitude = 0.0;
+    private int SelectedMonth = 1;
+    private string Test;
+    
+	private bool showTable = false;
+    protected override async Task OnInitializedAsync()
+    {
+        Test = await ApiService.GetTest();
+    }
 
-
+    private async Task Search()
+    {
+		showTable = true;
+        // Implement your search logic here using Latitude, Longitude, and SelectedMonth
+    }
 }
