@@ -15,7 +15,13 @@ namespace CrimeSummaryService.Controllers
             PoliceClient = policeClient;
         }
 
-        [HttpGet]
+        [HttpGet("test")]
+        public string GetTest()
+        {
+            return "Working!";
+        }
+
+        [HttpGet("summary")]
         public StreetLevelCrimeResults GetCrimeSummary(double lat, double lng, int? month = null)
         {
             try

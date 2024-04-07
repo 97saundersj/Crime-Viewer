@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build, Test, and deploy ASP.Net Core app to Azure
+name: Backend - Build, Test, and deploy REST api app to Azure
 
 on:
   push:
@@ -24,15 +24,18 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-      - name: Build with dotnet
-        run: dotnet build Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln --configuration Release
-        
+      - name: Build LocalCrimeViewer API
+        run: dotnet build Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj --configuration Release
+
+      - name: Build LocalCrimeViewer API Tests
+        run: dotnet build Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release
+
       - name: dotnet test
-        run: dotnet test Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln --configuration Release --logger trx --results-directory ./TestResults
+        run: dotnet test Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release --logger trx --results-directory ./TestResults
         id: test-results
         
       - name: dotnet publish
-        run: dotnet publish Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3

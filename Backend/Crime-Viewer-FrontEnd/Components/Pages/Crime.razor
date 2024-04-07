@@ -1,0 +1,42 @@
+﻿@page "/"
+@attribute [StreamRendering]
+
+@page "/fetchdata"
+@using System.Text.Json
+@using static System.Net.WebRequestMethods
+@inject IHttpClientFactory HttpClientFactory
+@inject IConfiguration configuration
+@using System.Net.Http.Json
+@using System.Collections.Generic
+@inject IConfiguration Configuration
+@inject HttpClient HttpClient
+@inject ApiService ApiService
+
+<PageTitle>Local Crime Viewer</PageTitle>
+
+<h1>Local Crime Viewer</h1>
+
+<p>Here there will be inputs to allow the User to search for Lat Lng and the month to retrieve local crimes for.</p>
+<p>The results will be shown in a table here.</p>
+<br>
+<p>The status of the REST API will be shown below:</p>
+
+@if (Test == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<p><em>@Test</em></p>
+}
+
+@code {
+	private string Test;
+	protected override async Task OnInitializedAsync()
+	{
+		Test = await ApiService.GetTest();
+
+	}
+
+
+}
