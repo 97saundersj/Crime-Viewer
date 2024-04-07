@@ -24,9 +24,12 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
-      - name: Build with dotnet
+      - name: Build LocalCrimeViewer API
         run: dotnet build Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release
-        
+
+      - name: Build LocalCrimeViewer API Tests
+        run: dotnet build Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release
+
       - name: dotnet test
         run: dotnet test Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release --logger trx --results-directory ./TestResults
         id: test-results
