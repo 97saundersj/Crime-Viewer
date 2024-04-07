@@ -4,30 +4,28 @@ public class ApiService
 {
 	private readonly IConfiguration _configuration;
 	private readonly HttpClient _httpClient;
+	private readonly string? _baseUrl;
 
 	public ApiService(IConfiguration configuration, HttpClient httpClient)
 	{
 		_configuration = configuration;
 		_httpClient = httpClient;
+
+		_baseUrl = _configuration["ApiBaseUrl"];
 	}
 
 	public async Task<string> GetTest()
 	{
-		string responseBody = null;
-		string baseUrl = null;
+		string responseBody;
 		try
 		{
-			baseUrl = _configuration["ApiBaseUrl"];
-
-			var response = await _httpClient.GetAsync($"{baseUrl}crime/test");
+			var response = await _httpClient.GetAsync($"{_baseUrl}crime/test");
 			response.EnsureSuccessStatusCode();
 			responseBody = await response.Content.ReadAsStringAsync();
 		}
 		catch (Exception ex)
 		{
-			responseBody = ex.Message;
-			responseBody += "\n" + $"{baseUrl}crime/test";
-			responseBody += ex.InnerException;
+			responseBody = "Error retreving data";
 		}
 
 		return responseBody;//JsonSerializer.Deserialize<string>(responseBody);

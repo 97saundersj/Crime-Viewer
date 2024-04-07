@@ -25,14 +25,14 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln --configuration Release
+        run: dotnet build Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release
         
       - name: dotnet test
-        run: dotnet test Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln --configuration Release --logger trx --results-directory ./TestResults
+        run: dotnet test Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release --logger trx --results-directory ./TestResults
         id: test-results
         
       - name: dotnet publish
-        run: dotnet publish Backend/PoliceCrimeViewer/PoliceCrimeViewer.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
