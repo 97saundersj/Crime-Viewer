@@ -14,9 +14,10 @@ public class ApiService
 	public async Task<string> GetTest()
 	{
 		string responseBody = null;
+		string baseUrl = null;
 		try
 		{
-			string baseUrl = _configuration["ApiBaseUrl"];
+			baseUrl = _configuration["ApiBaseUrl"];
 
 			var response = await _httpClient.GetAsync($"{baseUrl}crime/test");
 			response.EnsureSuccessStatusCode();
@@ -25,6 +26,8 @@ public class ApiService
 		catch (Exception ex)
 		{
 			responseBody = ex.Message;
+			responseBody += "\n" + $"{baseUrl}crime/test";
+			responseBody += ex.InnerException;
 		}
 
 		return responseBody;//JsonSerializer.Deserialize<string>(responseBody);
