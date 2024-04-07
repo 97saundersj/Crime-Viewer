@@ -1,4 +1,4 @@
-﻿@page "/crime"
+﻿@page "/"
 @attribute [StreamRendering]
 
 @page "/fetchdata"
@@ -12,11 +12,14 @@
 @inject HttpClient HttpClient
 @inject ApiService ApiService
 
-<PageTitle>Crime</PageTitle>
+<PageTitle>Local Crime Viewer</PageTitle>
 
-<h1>Weather</h1>
+<h1>Local Crime Viewer</h1>
 
-<p>This component demonstrates showing data.</p>
+<p>Here there will be inputs to allow the User to search for Lat Lng and the month to retrieve local crimes for.</p>
+<p>The results will be shown in a table here.</p>
+<br>
+<p>The status of the REST API will be shown below:</p>
 
 @if (Test == null)
 {
