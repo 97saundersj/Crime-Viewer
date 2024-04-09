@@ -13,6 +13,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<ApiService>();
+builder.Services.AddBlazorBootstrap();
 
 var app = builder.Build();
 

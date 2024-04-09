@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazor.Bootstrap" Version="2.1.0" />
     <PackageReference Include="PoliceUK" Version="1.0.5674.34783" />
   </ItemGroup>
 
