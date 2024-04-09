@@ -1,0 +1,56 @@
+﻿@inherits ComponentBase
+@using PoliceUk.Entities.StreetLevel;
+
+@if (!loading && Summary != null && Summary.Crimes != null && Summary.Crimes.Any())
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Category</th>
+				<th>Location</th>
+				<th>Outcome Date</th>
+				<th>Outcome Category</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var crime in Summary.Crimes)
+			{
+				<tr>
+					<td>@crime.Category</td>
+					<td>
+						<p>@crime.Location.Street.Name</p>
+						<p>@crime.Location.Latitude, @crime.Location.Latitude</p>
+					</td>
+					<td>
+						@if (crime.OutcomeStatus != null && crime.OutcomeStatus.Date != null)
+						{
+							<p>@crime.OutcomeStatus.Date</p>
+						}
+					</td>
+					<td>
+						@if (crime.OutcomeStatus != null && crime.OutcomeStatus.Category != null)
+						{
+							<p>@crime.OutcomeStatus.Category</p>
+						}
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else if (loading)
+{
+	<p><em>Loading</em></p>
+}
+else
+{
+	<p><em>No Crimes Found</em></p>
+}
+
+@code {
+	[Parameter]
+	public StreetLevelCrimeResults Summary { get; set; }
+
+	[Parameter]
+	public bool loading { get; set; }
+}

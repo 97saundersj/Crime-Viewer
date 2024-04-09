@@ -1,5 +1,6 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
+@inject ApiService ApiService
 
 <PageTitle>Counter</PageTitle>
 
@@ -9,8 +10,29 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<p>The results will be shown in a table here.</p>
+<br>
+<p>The status of the REST API will be shown below:</p>
+
+@if (Test == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p><em>@Test</em></p>
+}
+
 @code {
     private int currentCount = 0;
+
+    private string Test;
+
+    private bool showTable = false;
+    protected override async Task OnInitializedAsync()
+    {
+        Test = await ApiService.GetTest();
+    }
 
     private void IncrementCount()
     {

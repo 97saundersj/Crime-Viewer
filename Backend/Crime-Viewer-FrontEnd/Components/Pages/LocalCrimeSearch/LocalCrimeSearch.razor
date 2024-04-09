@@ -1,0 +1,53 @@
+﻿@inherits ComponentBase
+@rendermode InteractiveServer
+@using PoliceUk.Entities.StreetLevel;
+
+<div class="row">
+	<div class="col-sm-3">
+		<label for="latitude">Enter latitude:</label>
+		<InputNumber id="latitude" @bind-Value="Latitude" class="form-control" />
+	</div>
+	<div class="col-sm-3">
+		<label for="longitude">Enter longitude:</label>
+		<InputNumber id="longitude" @bind-Value="Longitude" class="form-control" />
+	</div>
+	<div class="col-sm-3">
+		<label for="month">Select month:</label>
+		<InputSelect id="month" class="form-select" @bind-Value="SelectedMonth">
+			<option value="1">January</option>
+			<option value="2">February</option>
+			<option value="3">March</option>
+			<option value="4">April</option>
+			<option value="5">May</option>
+			<option value="6">June</option>
+			<option value="7">July</option>
+			<option value="8">August</option>
+			<option value="9">September</option>
+			<option value="10">October</option>
+			<option value="11">November</option>
+			<option value="12">December</option>
+		</InputSelect>
+	</div>
+	<div class="col-sm-3">
+		<button class="btn btn-primary" @onclick="Search">Search</button>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public double Latitude { get; set; }
+
+	[Parameter]
+	public double Longitude { get; set; }
+
+	[Parameter]
+	public int SelectedMonth { get; set; }
+
+	[Parameter]
+	public EventCallback<(double latitude, double longitude, int selectedMonth)> OnSearch { get; set; }
+
+	private async Task Search()
+	{
+		await OnSearch.InvokeAsync((Latitude, Longitude, SelectedMonth));
+	}
+}

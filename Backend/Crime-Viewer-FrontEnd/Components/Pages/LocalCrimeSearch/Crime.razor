@@ -1,0 +1,33 @@
+﻿@page "/"
+@attribute [StreamRendering]
+@inject ApiService ApiService
+@rendermode InteractiveServer
+@using PoliceUk.Entities.StreetLevel;
+
+<PageTitle>Local Crime Viewer</PageTitle>
+
+<h1>Local Crime Viewer</h1>
+
+<LocalCrimeSearch Latitude="@Latitude" Longitude="@Longitude" SelectedMonth="@SelectedMonth" OnSearch="@((args)=> Search(args.Item1,args.Item2,args.Item3))" />
+
+<LocalCrimeTable Summary="@Summary" loading="@loading" />
+@code {
+	private double Latitude = 51.133112;//0.0;
+	private double Longitude = -0.989054;
+	private int SelectedMonth = 2;//1;
+
+	private StreetLevelCrimeResults Summary;
+
+	private bool loading = false;
+
+	private async Task Search(double latitude, double longitude, int selectedMonth)
+	{
+		Latitude = latitude;
+		Longitude = longitude;
+		SelectedMonth = selectedMonth;
+
+		loading = true;
+		Summary = await ApiService.GetCrimeSummary(Latitude, Longitude, SelectedMonth);
+		loading = false;
+	}
+}
