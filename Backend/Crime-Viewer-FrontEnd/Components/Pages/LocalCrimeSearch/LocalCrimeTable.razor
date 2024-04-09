@@ -1,11 +1,12 @@
 ﻿@inherits ComponentBase
 @using PoliceUk.Entities.StreetLevel;
 
-@if (!loading && Summary != null && Summary.Crimes != null && Summary.Crimes.Any())
+@if (!loading && CrimeResults != null && CrimeResults.Crimes != null && CrimeResults.Crimes.Any())
 {
 	<table class="table">
 		<thead>
 			<tr>
+				<th>Month</th>
 				<th>Category</th>
 				<th>Location</th>
 				<th>Outcome Date</th>
@@ -13,10 +14,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var crime in Summary.Crimes)
+			@foreach (var crime in CrimeResults.Crimes)
 			{
 				<tr>
-					<td>@crime.Category</td>
+					<td>@crime.Month</td>
+					<td>@crime.Category @crime.Month</td>
 					<td>
 						<p>@crime.Location.Street.Name</p>
 						<p>@crime.Location.Latitude, @crime.Location.Latitude</p>
@@ -49,7 +51,7 @@ else
 
 @code {
 	[Parameter]
-	public StreetLevelCrimeResults Summary { get; set; }
+	public StreetLevelCrimeResults CrimeResults { get; set; }
 
 	[Parameter]
 	public bool loading { get; set; }

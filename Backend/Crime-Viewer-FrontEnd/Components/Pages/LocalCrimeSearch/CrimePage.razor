@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-<LocalCrimeTable Summary="@Summary" loading="@loading" />
+<LocalCrimeTable CrimeResults="@CrimeResults" loading="@loading" />
 
 <style>
 	.bi-plus-square-fill-nav-menu {
@@ -33,7 +33,7 @@
 	private double Longitude = 0.0;
 	private int SelectedMonth = 1;
 
-	private StreetLevelCrimeResults Summary;
+	private StreetLevelCrimeResults CrimeResults;
 
 	private bool loading = false;
 
@@ -56,7 +56,7 @@
 		SelectedMonth = selectedMonth;
 
 		loading = true;
-		Summary = await ApiService.GetCrimeSummary(Latitude, Longitude, SelectedMonth);
+		CrimeResults = await ApiService.GetCrimeSummary(Latitude, Longitude, SelectedMonth);
 		loading = false;
 	}
 }

@@ -27,7 +27,7 @@ namespace CrimeSummaryService.Controllers
             try
             {
                 var geoposition = new Geoposition(lat, lng);
-                DateTime? requestedDate = month.HasValue ? DateTime.Now.AddMonths(-month.Value) : null;
+                DateTime? requestedDate = month.HasValue ? ConvertMonthToDateTime(month.Value) : null;
 
                 var streetLevelCrimes = PoliceClient.StreetLevelCrimes(geoposition, requestedDate);
 
@@ -38,5 +38,22 @@ namespace CrimeSummaryService.Controllers
                 throw new Exception("Failed to retrieve crime data from Police UK API.", ex);
             }
         }
-    }
+
+		public static DateTime ConvertMonthToDateTime(int monthNumber)
+		{
+			int currentYear = DateTime.Now.Year;
+			int currentMonth = DateTime.Now.Month;
+
+			if (monthNumber > currentMonth - 2)
+			{
+				// The requested month is in the past, use the previous year
+				return new DateTime(currentYear - 1, monthNumber, 1);
+			}
+			else
+			{
+				// The requested month is in the current year
+				return new DateTime(currentYear, monthNumber, 1);
+			}
+		}
+	}
 }
