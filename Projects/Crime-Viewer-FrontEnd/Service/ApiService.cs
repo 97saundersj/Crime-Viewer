@@ -15,23 +15,6 @@ public class ApiService
 		_baseUrl = _configuration["ApiBaseUrl"];
 	}
 
-	public async Task<string> GetTest()
-	{
-		string responseBody;
-		try
-		{
-			var response = await _httpClient.GetAsync($"{_baseUrl}crime/test");
-			response.EnsureSuccessStatusCode();
-			responseBody = await response.Content.ReadAsStringAsync();
-		}
-		catch (Exception ex)
-		{
-			responseBody = "Error retreving data";
-		}
-
-		return responseBody;//JsonSerializer.Deserialize<string>(responseBody);
-	}
-
 	public async Task<DateTime> GetLastUpdated()
 	{
 		try
