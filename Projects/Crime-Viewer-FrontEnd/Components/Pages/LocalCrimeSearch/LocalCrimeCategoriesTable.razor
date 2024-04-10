@@ -1,0 +1,47 @@
+﻿@inherits ComponentBase
+@using PoliceUk.Entities.StreetLevel;
+@using System.Linq;
+
+@if (!loading && CrimeResults != null && CrimeResults.Crimes != null && CrimeResults.Crimes.Any())
+{
+    var categoryCounts = CrimeResults.Crimes.GroupBy(c => c.Category).Select(g => new { Category = g.Key, Crimes = g.ToList() });
+
+    foreach (var category in categoryCounts)
+    {
+        <details>
+            <summary>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-1">Category</th>
+                            <th class="col-1">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@category.Category</td>
+                            <td>@category.Crimes.Count</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </summary>
+			<CrimesPerCategory Crimes="@category.Crimes" />
+        </details>
+    }
+}
+else if (loading)
+{
+    <p><em>Loading</em></p>
+}
+else
+{
+    <p><em>No Crimes Found</em></p>
+}
+
+@code {
+    [Parameter]
+    public StreetLevelCrimeResults CrimeResults { get; set; }
+
+    [Parameter]
+    public bool loading { get; set; }
+}

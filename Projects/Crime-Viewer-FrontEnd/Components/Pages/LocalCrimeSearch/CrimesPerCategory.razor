@@ -1,0 +1,57 @@
+﻿@using PoliceUk.Entities.StreetLevel
+@using System.Linq
+
+@if (Crimes != null && Crimes.Any())
+{
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Month</th>
+				<th>Location</th>
+				<th>Outcome</th>
+				<th>Outcome Month</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var crime in Crimes)
+			{
+				<tr>
+					<td>@crime.Month</td>
+					<td>
+						<p class="my-0">@crime.Location.Street.Name</p>
+						<p class="my-0"></p>
+						<a href="@($"https://www.google.com/maps/search/?api=1&query={@crime.Location.Latitude},{@crime.Location.Longitude}")" target="_blank">
+							(@crime.Location.Latitude, @crime.Location.Longitude)
+						</a>
+					</td>
+					<td>
+						@if (crime.OutcomeStatus != null && crime.OutcomeStatus.Category != null)
+						{
+							<p>@crime.OutcomeStatus.Category</p>
+						}
+						else
+						{
+							<p>?</p>
+						}
+					</td>
+					<td>
+						@if (crime.OutcomeStatus != null && crime.OutcomeStatus.Date != null)
+						{
+							<p>@crime.OutcomeStatus.Date</p>
+						}
+						else
+						{
+							<p>?</p>
+						}
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+}
+
+@code {
+	[Parameter]
+	public List<Crime> Crimes { get; set; }
+}

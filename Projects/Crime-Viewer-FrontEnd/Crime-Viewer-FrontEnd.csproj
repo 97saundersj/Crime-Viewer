@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Crime-Viewer-FrontEnd</RootNamespace>
+    <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor.Bootstrap" Version="2.1.0" />
+    <PackageReference Include="PoliceUK" Version="1.0.5674.34783" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Components\Pages\LocalCrimeSearch\LocalCrimeCategoriesTable.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -25,17 +25,17 @@ jobs:
           include-prerelease: true
 
       - name: Build LocalCrimeViewer API
-        run: dotnet build Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj --configuration Release
+        run: dotnet build Projects\PoliceCrimeViewer\Crime-Viewer-Backend.csproj --configuration Release
 
       - name: Build LocalCrimeViewer API Tests
-        run: dotnet build Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release
+        run: dotnet build Projects\CrimeViewerTests\Crime-Viewer-BackEnd-Tests.csproj --configuration Release
 
       - name: dotnet test
-        run: dotnet test Backend\CrimeViewerTests\CrimeViewerTests.csproj --configuration Release --logger trx --results-directory ./TestResults
+        run: dotnet test Projects\CrimeViewerTests\Crime-Viewer-BackEnd-Tests.csproj --configuration Release --logger trx --results-directory ./TestResults
         id: test-results
         
       - name: dotnet publish
-        run: dotnet publish Backend\PoliceCrimeViewer\PoliceCrimeViewer.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish Projects\PoliceCrimeViewer\Crime-Viewer-Backend.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
