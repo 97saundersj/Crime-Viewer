@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject ApiService ApiService
-
+@using Crime_Viewer_FrontEnd.Components.Pages.LocalCrimeSearch
 @using PoliceUk.Entities.StreetLevel;
 
 <PageTitle>Local Crime Viewer</PageTitle>
@@ -11,7 +11,7 @@
 <h5>View all Crimes within 1 Mile</h5>
 
 <LocalCrimeSearch Latitude="@Latitude" Longitude="@Longitude" SelectedMonth="@SelectedMonth" OnSearch="@((args)=> Search(args.Item1,args.Item2,args.Item3))" />
-<LocalCrimeTable CrimeResults="@CrimeResults" loading="@loading" />
+<LocalCrimeCategoriesTable CrimeResults="@CrimeResults" loading="@loading" />
 
 <style>
 	.bi-plus-square-fill-nav-menu {

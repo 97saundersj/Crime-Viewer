@@ -14,10 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\Pages\LocalCrimeCategories\CrimeCategoriesPage.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Components\Pages\LocalCrimeCategories\LocalCrimeCategoriesTable.razor">
+    <Content Update="Components\Pages\LocalCrimeSearch\LocalCrimeCategoriesTable.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
