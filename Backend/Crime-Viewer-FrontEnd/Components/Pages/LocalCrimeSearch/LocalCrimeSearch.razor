@@ -1,8 +1,17 @@
 ﻿@inherits ComponentBase
 @rendermode InteractiveServer
 @using PoliceUk.Entities.StreetLevel;
+@inject ApiService ApiService
+@inject IJSRuntime JSRuntime;
+
+<p>Crimes last updated at: @LastUpdated.ToShortDateString()</p>
 
 <div class="row align-items-center">
+	<div class="col-md-auto mt-3">
+		<button class="btn btn-primary" @onclick="GetLocation">
+			<Icon Name="IconName.Crosshair" />
+		</button>
+	</div>
 	<div class="col-sm-3">
 		<label for="latitude">Latitude:</label>
 		<InputNumber id="latitude" @bind-Value="Latitude" class="form-control" />
@@ -12,7 +21,7 @@
 		<InputNumber id="longitude" @bind-Value="Longitude" class="form-control" />
 	</div>
 	<div class="col-sm-3">
-		<label for="month">month:</label>
+		<label for="month">Month:</label>
 		<InputSelect id="month" class="form-select" @bind-Value="SelectedMonth">
 			<option value="1">January</option>
 			<option value="2">February</option>
@@ -28,7 +37,7 @@
 			<option value="12">December</option>
 		</InputSelect>
 	</div>
-	<div class="col-sm-3 mt-4">
+	<div class="col-sm-1 mt-4">
 		<button class="btn btn-primary" @onclick="Search">Search</button>
 	</div>
 </div>
@@ -45,6 +54,26 @@
 
 	[Parameter]
 	public EventCallback<(double latitude, double longitude, int selectedMonth)> OnSearch { get; set; }
+
+	private DateTime LastUpdated;
+
+	protected override async Task OnInitializedAsync()
+	{
+		LastUpdated = await ApiService.GetLastUpdated();
+
+	}
+
+	async Task GetLocation()
+	{
+		await JSRuntime.InvokeVoidAsync("getLocation", DotNetObjectReference.Create(this));
+	}
+
+	[JSInvokable]
+	public void LocationReceived(double latitude, double longitude)
+	{
+		Latitude = latitude;
+		Longitude = longitude;
+	}
 
 	private async Task Search()
 	{

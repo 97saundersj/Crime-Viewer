@@ -2,24 +2,15 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject ApiService ApiService
-@inject IJSRuntime JSRuntime;
+
 @using PoliceUk.Entities.StreetLevel;
 
 <PageTitle>Local Crime Viewer</PageTitle>
 
 <h1>Local Crime Viewer</h1>
+<h5>View all Crimes within 1 Mile</h5>
 
-<div class="row align-items-center">
-	<div class="col-sm-1 mt-3">
-		<button class="btn btn-primary" @onclick="GetLocation">
-			<Icon Name="IconName.Crosshair" />
-		</button>
-	</div>
-	<div class="col">
-		<LocalCrimeSearch Latitude="@Latitude" Longitude="@Longitude" SelectedMonth="@SelectedMonth" OnSearch="@((args)=> Search(args.Item1,args.Item2,args.Item3))" />
-	</div>
-</div>
-
+<LocalCrimeSearch Latitude="@Latitude" Longitude="@Longitude" SelectedMonth="@SelectedMonth" OnSearch="@((args)=> Search(args.Item1,args.Item2,args.Item3))" />
 <LocalCrimeTable CrimeResults="@CrimeResults" loading="@loading" />
 
 <style>
@@ -36,18 +27,6 @@
 	private StreetLevelCrimeResults CrimeResults;
 
 	private bool loading = false;
-
-	async Task GetLocation()
-	{
-		await JSRuntime.InvokeVoidAsync("getLocation", DotNetObjectReference.Create(this));
-	}
-
-	[JSInvokable]
-	public void LocationReceived(double latitude, double longitude)
-	{
-		Latitude = latitude;
-		Longitude = longitude;
-	}
 
 	private async Task Search(double latitude, double longitude, int selectedMonth)
 	{

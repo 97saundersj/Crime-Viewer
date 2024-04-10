@@ -32,7 +32,29 @@ public class ApiService
 		return responseBody;//JsonSerializer.Deserialize<string>(responseBody);
 	}
 
-    public async Task<StreetLevelCrimeResults> GetCrimeSummary(double latitude, double longitude, int? month = null)
+	public async Task<DateTime> GetLastUpdated()
+	{
+		try
+		{
+			var response = await _httpClient.GetAsync($"{_baseUrl}crime/lastupdated");
+			response.EnsureSuccessStatusCode();
+			var responseBody = await response.Content.ReadAsStringAsync();
+
+			// Deserialize the response into StreetLevelCrimeResults object
+			// TODO: Move PropertyNameCaseInsensitive into Program?
+			var summary = JsonSerializer.Deserialize<DateTime>(responseBody, new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true
+			});
+			return summary;
+		}
+		catch (Exception ex)
+		{
+			throw new Exception("Failed to retrieve crime summary data from the API.", ex);
+		}
+	}
+
+	public async Task<StreetLevelCrimeResults> GetCrimeSummary(double latitude, double longitude, int? month = null)
     {
         try
         {
@@ -40,9 +62,9 @@ public class ApiService
             response.EnsureSuccessStatusCode();
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            // Deserialize the response into StreetLevelCrimeResults object
-            //var summary = JsonSerializer.Deserialize<StreetLevelCrimeResults>(responseBody);
-            var summary = JsonSerializer.Deserialize<StreetLevelCrimeResults>(responseBody, new JsonSerializerOptions
+			// Deserialize the response into StreetLevelCrimeResults object
+			// TODO: Move PropertyNameCaseInsensitive into Program?
+			var summary = JsonSerializer.Deserialize<StreetLevelCrimeResults>(responseBody, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });

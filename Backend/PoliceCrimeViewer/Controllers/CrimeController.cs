@@ -21,7 +21,21 @@ namespace CrimeSummaryService.Controllers
             return "Working!";
         }
 
-        [HttpGet("summary")]
+		[HttpGet("lastUpdated")]
+		public DateTime GetLastUpdated()
+		{
+			try
+			{
+				// Can't get from Interface so cast to class - Raise as issue on PoliceUKClient Github?
+				return ((PoliceUkClient)PoliceClient).LastUpdated();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Failed to retrieve crime data from Police UK API.", ex);
+			}
+		}
+
+		[HttpGet("summary")]
         public StreetLevelCrimeResults GetCrimeSummary(double lat, double lng, int? month = null)
         {
             try

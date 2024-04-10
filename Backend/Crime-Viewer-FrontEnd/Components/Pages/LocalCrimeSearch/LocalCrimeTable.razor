@@ -3,7 +3,7 @@
 
 @if (!loading && CrimeResults != null && CrimeResults.Crimes != null && CrimeResults.Crimes.Any())
 {
-	<table class="table">
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>Month</th>
@@ -20,8 +20,11 @@
 					<td>@crime.Month</td>
 					<td>@crime.Category @crime.Month</td>
 					<td>
-						<p>@crime.Location.Street.Name</p>
-						<p>@crime.Location.Latitude, @crime.Location.Latitude</p>
+						<p class="my-0">@crime.Location.Street.Name</p>
+						<p class="my-0"></p>
+						<a href="@($"https://www.google.com/maps/search/?api=1&query={@crime.Location.Latitude},{@crime.Location.Longitude}")" target="_blank">
+							(@crime.Location.Latitude, @crime.Location.Longitude)
+						</a>
 					</td>
 					<td>
 						@if (crime.OutcomeStatus != null && crime.OutcomeStatus.Date != null)
