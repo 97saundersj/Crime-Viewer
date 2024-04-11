@@ -41,7 +41,7 @@ public class ApiService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}crime/summary?lat={latitude}&lng={longitude}&month={month}");
+            var response = await _httpClient.GetAsync($"{_baseUrl}crime/crimes?lat={latitude}&lng={longitude}&month={month}");
             response.EnsureSuccessStatusCode();
             var responseBody = await response.Content.ReadAsStringAsync();
 
