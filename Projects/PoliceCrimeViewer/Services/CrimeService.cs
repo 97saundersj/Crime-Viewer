@@ -4,13 +4,14 @@ using PoliceUk.Entities.StreetLevel;
 namespace CrimeViewerBackend.Services
 {
     public class CrimeService : ICrimeService
-{
-        private readonly IPoliceUkClient PoliceClient;
-        private static DateTime? CrimesLastUpdated = null;
+    {
+        public DateTime? CrimesLastUpdated = null;
 
-        public CrimeService()
+        private readonly IPoliceUkClient PoliceClient;
+
+        public CrimeService(IPoliceUkClient policeUkClient)
         {
-            PoliceClient = new PoliceUkClient();
+            PoliceClient = policeUkClient;
         }
 
         /// <inheritdoc/>
@@ -50,10 +51,9 @@ namespace CrimeViewerBackend.Services
             }
         }
 
-        private DateTime ConvertMonthToDateTime(int monthNumber)
+        public DateTime ConvertMonthToDateTime(int monthNumber)
         {
             int currentYear = DateTime.Now.Year;
-            int currentMonth = DateTime.Now.Month;
 
             if (!CrimesLastUpdated.HasValue)
             {

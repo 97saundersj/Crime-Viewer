@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PoliceUk.Entities.StreetLevel;
-using PoliceUk;
 using CrimeViewerBackend.Services;
 
 namespace CrimeSummaryService.Controllers

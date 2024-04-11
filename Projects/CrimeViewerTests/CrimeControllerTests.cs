@@ -1,14 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using CrimeSummaryService.Controllers;
+﻿using CrimeSummaryService.Controllers;
 using CrimeViewerBackend.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PoliceUk;
 using PoliceUk.Entities.StreetLevel;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CrimeService.Tests
 {
