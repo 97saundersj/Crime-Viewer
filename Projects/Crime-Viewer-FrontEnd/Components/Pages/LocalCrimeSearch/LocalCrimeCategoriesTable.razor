@@ -1,4 +1,5 @@
 ﻿@inherits ComponentBase
+@using Humanizer
 @using PoliceUk.Entities.StreetLevel;
 @using System.Linq;
 
@@ -19,7 +20,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@category.Category</td>
+                            <td>@category.Category.Humanize(LetterCasing.Title)</td>
                             <td>@category.Crimes.Count</td>
                         </tr>
                     </tbody>
