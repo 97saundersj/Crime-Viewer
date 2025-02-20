@@ -56,7 +56,7 @@ namespace CrimeService.Tests
             DateTime result = service.ConvertMonthToDateTime(monthNumber);
 
             // Assert
-            Assert.AreEqual(DateTime.Now.Year, result.Year);
+            Assert.AreEqual(DateTime.Now.Year - 1, result.Year);
             Assert.AreEqual(monthNumber, result.Month);
             Assert.AreEqual(1, result.Day);
         }

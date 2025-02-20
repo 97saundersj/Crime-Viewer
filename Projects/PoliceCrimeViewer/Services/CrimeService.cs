@@ -53,23 +53,28 @@ namespace CrimeViewerBackend.Services
 
         public DateTime ConvertMonthToDateTime(int monthNumber)
         {
-            int currentYear = DateTime.Now.Year;
-
+            // Ensure CrimesLastUpdated is retrieved before processing
             if (!CrimesLastUpdated.HasValue)
             {
                 UpdateLastUpdated();
+            }
 
-            }
-            if (monthNumber > CrimesLastUpdated.Value.Month)
+            if (!CrimesLastUpdated.HasValue)
             {
-                // The requested month is in the past, use the previous year
-                return new DateTime(currentYear - 1, monthNumber, 1);
+                throw new InvalidOperationException("CrimesLastUpdated could not be determined.");
             }
-            else
+
+            int lastUpdatedYear = CrimesLastUpdated.Value.Year;
+            int lastUpdatedMonth = CrimesLastUpdated.Value.Month;
+
+            if (monthNumber > lastUpdatedMonth)
             {
-                // The requested month is in the current year
-                return new DateTime(currentYear, monthNumber, 1);
+                // The requested month is in the past relative to last updated data, use the previous year
+                return new DateTime(lastUpdatedYear - 1, monthNumber, 1);
             }
+
+            // The requested month is in the same year as the last updated data
+            return new DateTime(lastUpdatedYear, monthNumber, 1);
         }
     }
 }

@@ -8,7 +8,7 @@
 
 <div class="row align-items-center">
 	<div class="col-md-auto mt-3">
-		<button class="btn btn-primary" @onclick="GetLocation">
+		<button id="get-location" class="btn btn-primary" @onclick="GetLocation">
 			<Icon Name="IconName.Crosshair" />
 		</button>
 	</div>
@@ -62,17 +62,18 @@
 		LastUpdated = await ApiService.GetLastUpdated();
 	}
 
-	async Task GetLocation()
-	{
-		await JSRuntime.InvokeVoidAsync("getLocation", DotNetObjectReference.Create(this));
-	}
+	private async Task GetLocation()
+    {
+        await JSRuntime.InvokeVoidAsync("getLocation", DotNetObjectReference.Create(this));
+    }
 
-	[JSInvokable]
-	public void LocationReceived(double latitude, double longitude)
-	{
-		Latitude = latitude;
-		Longitude = longitude;
-	}
+    [JSInvokable]
+    public void LocationReceived(double latitude, double longitude)
+    {
+        Latitude = latitude;
+        Longitude = longitude;
+        StateHasChanged();
+    }
 
 	private async Task Search()
 	{
